@@ -5,10 +5,10 @@
         <v-card class="elevation-12">
           <v-window v-model="step">
             <v-window-item :value="1">
-              <SignIn @step="step++"/>
+              <SignIn @step="step++" />
             </v-window-item>
             <v-window-item :value="2">
-              <SignUp  @step="step--"/>
+              <SignUp @step="step--" />
             </v-window-item>
           </v-window>
         </v-card>
@@ -22,8 +22,14 @@ import SignIn from "../../components/Auth/SignIn";
 import SignUp from "../../components/Auth/SignUp";
 export default {
   name: "Login",
-    components: {SignUp, SignIn},
-    data: () => ({
+  props: ["user"],
+  components: { SignUp, SignIn },
+  mounted() {
+    if (this.user) {
+      this.$router.push({ name: "home" });
+    }
+  },
+  data: () => ({
     step: 1
   })
 };

@@ -105,7 +105,7 @@ export default {
             userCred => {
               return userCred.user
                 .updateProfile({
-                    displayName: this.username
+                  displayName: this.username
                 })
                 .then(() => {
                   this.$router.push("/");

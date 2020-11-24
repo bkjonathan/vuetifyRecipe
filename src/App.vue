@@ -1,19 +1,15 @@
 <template>
   <v-app>
     <v-main>
-      <router-view
-        :user="user"
-        :rooms="rooms"
-        @logout="logout"
-      />
+      <router-view :user="user" :rooms="rooms" @logout="logout" />
     </v-main>
   </v-app>
 </template>
 
 <script>
-    /* eslint-disable no-unused-vars */
+/* eslint-disable no-unused-vars */
 
-    import { db, firebaseAuth } from "./db";
+import { db, firebaseAuth } from "./db";
 export default {
   name: "App",
 
@@ -29,7 +25,7 @@ export default {
         this.user = null;
         this.$router.push("login");
       });
-    },
+    }
     // addRoom: function(roomName) {
     //   db.collection("users")
     //     .doc(this.user.uid)
@@ -51,7 +47,7 @@ export default {
     firebaseAuth.onAuthStateChanged(user => {
       if (user) {
         this.user = user;
-          console.log(user.displayName);
+        console.log(user.displayName);
         // db.collection("users")
         //   .doc(this.user.uid)
         //   .collection("rooms")

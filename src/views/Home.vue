@@ -1,6 +1,6 @@
 <template>
   <v-card flat class="no-border">
-    <Header />
+    <Header :user="user"  @logout="$emit('logout')"/>
 
     <v-container fluid>
       <v-row justify="center">
@@ -102,7 +102,7 @@ import Header from "../components/Layout/Header";
 export default {
   name: "Home",
   components: { Header },
-    props:['user'],
+  props: ["user"],
   data: () => ({
     showMore: false,
     searchToggle: false

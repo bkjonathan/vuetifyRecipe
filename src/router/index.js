@@ -5,7 +5,7 @@ import VueRouter from "vue-router";
 Vue.use(VueRouter);
 
 // const routes = [...MainLayout, ...PlainLayout];
-const  routes = [
+const routes = [
   {
     path: "/",
     component: () => import("./../views/Home"),
@@ -16,7 +16,7 @@ const  routes = [
     name: "login",
     component: () => import("./../views/Auth/Login.vue")
   }
-]
+];
 
 const router = new VueRouter({
   routes
