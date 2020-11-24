@@ -102,6 +102,7 @@ import Header from "../components/Layout/Header";
 export default {
   name: "Home",
   components: { Header },
+    props:['user'],
   data: () => ({
     showMore: false,
     searchToggle: false

@@ -1,7 +1,7 @@
 <template>
   <v-row>
     <v-col cols="12" md="8">
-      <v-card-text class="mt-12">
+      <v-card-text>
         <h1 class="text-center display-2 primary--text">
           Sign In
         </h1>
@@ -14,27 +14,30 @@
           Ensure your email for registration
         </h4>
         <v-divider class="my-4" />
-        <v-form>
+        <v-form v-model="valid" @submit.prevent="login" ref="loginForm">
           <v-text-field
             label="Email Address"
             prepend-inner-icon="mdi-mail"
             color="primary"
             filled
+            v-model="email"
+            :rules="[() => !!email || 'Email field is required']"
           />
           <v-text-field
             label="Password"
             prepend-inner-icon="mdi-fingerprint"
             color="primary"
+            type="password"
             filled
+            v-model="password"
+            :rules="[() => !!password || 'Password field is required']"
           />
-<!--          <h3 class="text-center mt-3">Forget your Password ?</h3>-->
+          <!--          <h3 class="text-center mt-3">Forget your Password ?</h3>-->
           <div class="text-center mt-3">
-            <v-btn rounded color="primary">Sign In</v-btn>
+            <v-btn type="submit" rounded color="primary">Sign In</v-btn>
           </div>
         </v-form>
-
       </v-card-text>
-
     </v-col>
     <v-col cols="12" md="4" class="primary">
       <v-card-text class="white--text mt-12">
@@ -47,12 +50,49 @@
         <v-btn rounded outlined dark @click="$emit('step')">Sign Up</v-btn>
       </div>
     </v-col>
+    <v-snackbar
+      v-model="snackbar"
+      :timeout="2000"
+      top
+      right
+      :color="snackbarColor"
+    >
+      {{ errorMsg }}
+    </v-snackbar>
   </v-row>
 </template>
 
 <script>
+/* eslint-disable no-unused-vars */
+
+import { firebaseAuth } from "../../db";
+
 export default {
-  name: "SignIn"
+  name: "SignIn",
+  data: () => ({
+    email: "",
+    password: "",
+    errorMsg: "",
+    snackbarColor: "error",
+    snackbar: false,
+    valid: false
+  }),
+  methods: {
+    login: function() {
+      this.$refs.loginForm.validate();
+      if (this.valid) {
+        firebaseAuth.signInWithEmailAndPassword(this.email, this.password).then(
+          () => {
+            this.$router.push("/");
+          },
+          error => {
+            this.errorMsg = error.message;
+            this.snackbar = true;
+          }
+        );
+      }
+    }
+  }
 };
 </script>
 

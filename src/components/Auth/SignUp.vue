@@ -23,37 +23,102 @@
           Ensure your email for Registration
         </h4>
         <v-divider class="my-4" />
-        <v-form>
+        <v-form v-model="valid" @submit.prevent="register" ref="registerForm">
           <v-text-field
             label="Username"
             prepend-inner-icon="mdi-account"
             color="primary"
             filled
+            v-model="username"
+            :rules="[() => !!username || 'Username field is required']"
           />
           <v-text-field
             label="Email Address"
             prepend-inner-icon="mdi-email"
             color="primary"
             filled
+            type="email"
+            v-model="email"
+            :rules="[() => !!email || 'Email field is required']"
           />
           <v-text-field
             label="Password"
             prepend-inner-icon="mdi-fingerprint"
             color="primary"
             filled
+            type="password"
+            v-model="password"
+            :rules="[() => !!password || 'Password field is required']"
+          />
+          <v-text-field
+            label="Confirm Password"
+            prepend-inner-icon="mdi-fingerprint"
+            color="primary"
+            filled
+            type="password"
+            v-model="con_password"
+            :rules="[
+              () => !!con_password || 'Confirm Password field is required',
+              () => con_password === password || 'Password does not match'
+            ]"
           />
           <div class="text-center mt-3">
-            <v-btn rounded color="primary">Sign Up</v-btn>
+            <v-btn type="submit" rounded color="primary">Sign Up</v-btn>
           </div>
         </v-form>
       </v-card-text>
     </v-col>
+    <v-snackbar
+      v-model="snackbar"
+      :timeout="2000"
+      top
+      right
+      :color="snackbarColor"
+    >
+      {{ errorMsg }}
+    </v-snackbar>
   </v-row>
 </template>
 
 <script>
+import { firebaseAuth } from "../../db";
+
 export default {
-  name: "SignUp"
+  name: "SignUp",
+  data: () => ({
+    email: "",
+    password: "",
+    con_password: "",
+    username: "",
+    errorMsg: "",
+    snackbarColor: "error",
+    snackbar: false,
+    valid: false
+  }),
+  methods: {
+    register: function() {
+      this.$refs.registerForm.validate();
+      if (this.valid) {
+        firebaseAuth
+          .createUserWithEmailAndPassword(this.email, this.password)
+          .then(
+            userCred => {
+              return userCred.user
+                .updateProfile({
+                    displayName: this.username
+                })
+                .then(() => {
+                  this.$router.push("/");
+                });
+            },
+            error => {
+              this.errorMsg = error.message;
+              this.snackbar = true;
+            }
+          );
+      }
+    }
+  }
 };
 </script>
 
