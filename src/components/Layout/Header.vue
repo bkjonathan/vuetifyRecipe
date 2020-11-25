@@ -10,7 +10,7 @@
     <v-spacer/>
     <v-btn :to="{name:'login'}" v-if="!user">Login</v-btn>
     <template v-else>
-      <v-btn class="mr-3" text>Dashboard</v-btn>
+      <v-btn :to="{name:'dashboard'}" class="mr-3" text>Dashboard</v-btn>
       <v-btn text @click="$emit('logout')">Logout</v-btn>
     </template>
 

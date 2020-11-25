@@ -15,6 +15,21 @@ const routes = [
     path: "/Login",
     name: "login",
     component: () => import("./../views/Auth/Login.vue")
+  },
+  {
+    path: "/Dashboard",
+    name: "dashboard",
+    component: () => import("./../views/User/Dashboard.vue")
+  },
+  {
+    path: "/Recipe",
+    name: "recipe",
+    component: () => import("./../views/User/RecipeList.vue")
+  },
+  {
+    path: "/Save-Recipe",
+    name: "save_recipe",
+    component: () => import("./../views/User/SaveRecipe.vue")
   }
 ];
 
