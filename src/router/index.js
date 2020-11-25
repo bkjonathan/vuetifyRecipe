@@ -9,7 +9,10 @@ const routes = [
   {
     path: "/",
     component: () => import("./../views/Home"),
-    name: "home"
+    name: "home",
+    meta:{
+      title:"Home"
+    }
   },
   {
     path: "/Login",
@@ -19,17 +22,34 @@ const routes = [
   {
     path: "/Dashboard",
     name: "dashboard",
-    component: () => import("./../views/User/Dashboard.vue")
+    component: () => import("./../views/User/Dashboard.vue"),
+    meta:{
+      title:"Dashboard"
+    }
   },
   {
     path: "/Recipe",
     name: "recipe",
-    component: () => import("./../views/User/RecipeList.vue")
+    component: () => import("./../views/User/RecipeList.vue"),
+    meta:{
+      title:"Recipes"
+    }
+  },
+  {
+    path: "/Create-Recipe",
+    name: "create_recipe",
+    component: () => import("./../views/User/CreateRecipe.vue"),
+    meta:{
+      title:"Create Recipes"
+    }
   },
   {
     path: "/Save-Recipe",
     name: "save_recipe",
-    component: () => import("./../views/User/SaveRecipe.vue")
+    component: () => import("./../views/User/SaveRecipe.vue"),
+    meta:{
+      title:"Save Recipes"
+    }
   }
 ];
 

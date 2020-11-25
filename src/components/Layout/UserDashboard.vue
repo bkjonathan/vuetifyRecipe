@@ -1,5 +1,5 @@
 <template>
-  <v-card class="overflow-hidden" flat style="border-radius: 0px;">
+  <v-card class="overflow-hidden " flat style="border-radius: 0px;" >
     <v-app-bar
       absolute
       color="primary"
@@ -17,9 +17,9 @@
         ></v-img>
       </template>
 
-      <v-app-bar-nav-icon></v-app-bar-nav-icon>
+<!--      <v-app-bar-nav-icon></v-app-bar-nav-icon>-->
 
-      <v-toolbar-title>Title</v-toolbar-title>
+      <v-toolbar-title>{{$route.meta.title || 'Recipe App'}}</v-toolbar-title>
 
       <v-spacer></v-spacer>
 
@@ -27,12 +27,8 @@
         <v-icon>mdi-magnify</v-icon>
       </v-btn>
 
-      <v-btn icon>
-        <v-icon>mdi-heart</v-icon>
-      </v-btn>
-
-      <v-btn icon>
-        <v-icon>mdi-dots-vertical</v-icon>
+      <v-btn icon :to="{name:'home'}" exact>
+        <v-icon>mdi-home</v-icon>
       </v-btn>
 
       <template v-slot:extension>
@@ -45,11 +41,11 @@
     </v-app-bar>
     <v-sheet
       id="scrolling-techniques-3"
-      class="overflow-y-auto"
+      class="overflow-y-auto bg_admin"
       max-height="100vh"
 
     >
-      <v-container>
+      <v-container >
         <div style="margin-top: 200px;"></div>
         <slot></slot>
       </v-container>

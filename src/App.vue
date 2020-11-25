@@ -48,23 +48,6 @@ export default {
       if (user) {
         this.user = user;
         console.log(user.displayName);
-        // db.collection("users")
-        //   .doc(this.user.uid)
-        //   .collection("rooms")
-        //   .onSnapshot(snapShot => {
-        //     const snapData = [];
-        //     snapShot.forEach(doc => {
-        //       snapData.push({
-        //         id: doc.id,
-        //         name: doc.data().name
-        //       });
-        //     });
-        //     this.rooms = snapData.sort((a, b) => {
-        //       if (a.name.toLowerCase() < b.name.toLowerCase()) {
-        //         return -1;
-        //       } else return 1;
-        //     });
-        //   });
       }
     });
   }

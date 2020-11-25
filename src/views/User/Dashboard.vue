@@ -24,14 +24,27 @@
       <v-col cols="12">
         <h4>Recent Recipes</h4>
       </v-col>
+      <RecipeCard/>
+      <RecipeCard/>
+      <RecipeCard/>
+      <RecipeCard/>
+      <RecipeCard/>
+      <v-col cols="12">
+        <h4>Most like Recipes</h4>
+      </v-col>
+      <RecipeCard/>
+      <RecipeCard/>
+      <RecipeCard/>
+      <RecipeCard/>
     </v-row>
   </UserDashboard>
 </template>
 <script>
 import UserDashboard from "../../components/Layout/UserDashboard";
+import RecipeCard from "../../components/User/RecipeCard";
 export default {
   name: "Dashboard",
-  components: { UserDashboard }
+  components: {RecipeCard, UserDashboard }
 };
 </script>
 
