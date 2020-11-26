@@ -23,16 +23,17 @@
 
       <v-spacer></v-spacer>
 
-      <v-btn icon>
-        <v-icon>mdi-magnify</v-icon>
-      </v-btn>
+<!--      <v-btn icon>-->
+<!--        <v-icon>mdi-magnify</v-icon>-->
+<!--      </v-btn>-->
 
-      <v-btn icon :to="{name:'home'}" exact>
-        <v-icon>mdi-home</v-icon>
+      <v-btn icon @click="$emit('logout')" exact>
+        <v-icon>mdi-exit-to-app</v-icon>
       </v-btn>
 
       <template v-slot:extension>
-        <v-tabs align-with-title fixed-tabs>
+        <v-tabs align-with-title>
+          <v-tab :to="{ name: 'home' }">Home</v-tab>
           <v-tab :to="{ name: 'dashboard' }">Dashboard</v-tab>
           <v-tab :to="{ name: 'recipe' }">Recipes</v-tab>
           <v-tab :to="{ name: 'save_recipe' }">Saved Recipes</v-tab>
@@ -45,17 +46,22 @@
       max-height="100vh"
 
     >
-      <v-container >
+      <v-container  style="margin-bottom: 10rem">
         <div style="margin-top: 200px;"></div>
         <slot></slot>
       </v-container>
     </v-sheet>
+    <Footer/>
   </v-card>
 </template>
 
 <script>
+import Footer from "./Footer";
 export default {
-  name: "UserDashboard"
+  name: "UserDashboard",
+  components: {Footer},
+  methods:{
+  }
 };
 </script>
 

@@ -118,7 +118,7 @@ export default {
       ],
       photo: "",
       status: true,
-      description: ""
+      description: "",
     }
   }),
   methods: {
@@ -135,7 +135,13 @@ export default {
           return alert("Please add Photo for recipe");
         }
         let db = realTimeDb.ref("recipes/" + this.user.uid);
-        db.push(this.item);
+        let data = {...this.item};
+        data.user = {
+          email:this.user.email,
+          displayName:this.user.displayName
+        };
+        data.createdAt = Date.now();
+        db.push(data);
 
         this.item = this.resetItem();
         this.photo = [];

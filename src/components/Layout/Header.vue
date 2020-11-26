@@ -4,9 +4,9 @@
     dark
     extended
     flat
-    :src="require('@/assets/header.jpg')"
+    :src="require('@/assets/cooking.svg')"
   >
-    <v-app-bar-nav-icon></v-app-bar-nav-icon>
+<!--    <v-app-bar-nav-icon></v-app-bar-nav-icon>-->
     <v-spacer/>
     <v-btn :to="{name:'login'}" v-if="!user">Login</v-btn>
     <template v-else>

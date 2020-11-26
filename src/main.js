@@ -8,6 +8,13 @@ import "@mdi/font/css/materialdesignicons.css";
 import "./css/app.scss";
 Vue.config.productionTip = false;
 
+import VueTimeago from 'vue-timeago'
+
+Vue.use(VueTimeago, {
+  name: 'Timeago',
+  locale: 'en',
+})
+
 new Vue({
   router,
   store,

@@ -28,10 +28,10 @@
         color="pink"
         dark
         fixed
-        bottom
-        right
         fab
+        right
         :to="{ name: 'create_recipe' }"
+        style="bottom: 120px"
       >
         <v-icon>mdi-plus</v-icon>
       </v-btn>

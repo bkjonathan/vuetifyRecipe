@@ -1,8 +1,8 @@
 <template>
   <v-card flat class="no-border">
-    <Header :user="user"  @logout="$emit('logout')"/>
+    <Header :user="user" @logout="$emit('logout')" />
 
-    <v-container fluid>
+    <v-container fluid class="bg_admin" style="margin-bottom: 10rem">
       <v-row justify="center">
         <v-col cols="11">
           <v-card
@@ -12,20 +12,19 @@
             shaped
           >
             <v-toolbar flat>
-              <v-toolbar-title class="grey--text">
-                <template v-if="searchToggle">
-                  <v-text-field
-                    label="Search Recipes"
-                    class="mt-6"
-                    dense
-                    outlined
-                    shaped
-                  />
-                </template>
-                <template v-else>
-                  Food Recipes App
-                </template>
-              </v-toolbar-title>
+              <template v-if="searchToggle">
+                <v-text-field
+                  label="Search Recipes"
+                  class="mt-6"
+                  dense
+                  outlined
+                  v-model="search"
+                  style="width: 100%"
+                />
+              </template>
+              <template v-else>
+                Food Recipes App
+              </template>
 
               <v-spacer></v-spacer>
 
@@ -46,52 +45,43 @@
 
             <v-slide-x-transition>
               <v-card-text v-if="showMore" style="height: 200px;">
-                gddd
+                <v-list>
+                  <v-list-item-group>
+                    <v-list-item tag="label">
+                      <v-list-item-action>
+                        <v-checkbox
+                          color="primary"
+                          v-model="reviewSort"
+                        ></v-checkbox>
+                      </v-list-item-action>
+
+                      <v-list-item-content>
+                        <v-list-item-title
+                          >Sort by Most Reviews</v-list-item-title
+                        >
+                      </v-list-item-content>
+                    </v-list-item>
+                  </v-list-item-group>
+                </v-list>
               </v-card-text>
             </v-slide-x-transition>
           </v-card>
         </v-col>
       </v-row>
       <v-row>
-        <v-col cols="6" md="6" lg="4" xl="3">
-          <v-card class="mx-auto">
-            <v-img
-              height="250"
-              src="https://cdn.vuetifyjs.com/images/cards/cooking.png"
-              :aspect-ratio="1"
-            ></v-img>
-
-            <v-card-title>Cafe Badilico</v-card-title>
-
-            <v-card-text class="mt-n5">
-              <v-row align="center" class="mx-0">
-                <v-rating
-                  :value="4.5"
-                  color="amber"
-                  dense
-                  half-increments
-                  readonly
-                  size="14"
-                ></v-rating>
-
-                <div class="grey--text ml-4">
-                  4.5 (413)
-                </div>
-              </v-row>
-
-              <div class="my-2 subtitle-1">
-                $ • Italian, Cafe
-              </div>
-
-              <div>
-                Small plates, salads & sandwiches - an intimate setting with 12
-                indoor seats plus patio seating.
-              </div>
-            </v-card-text>
-          </v-card>
+        <v-col
+          cols="6"
+          md="6"
+          lg="4"
+          xl="3"
+          v-for="(item, index) in filterItem"
+          :key="index"
+        >
+          <HomeCard :item="item" />
         </v-col>
       </v-row>
     </v-container>
+    <Footer/>
   </v-card>
 </template>
 
@@ -99,13 +89,81 @@
 // @ is an alias to /src
 
 import Header from "../components/Layout/Header";
+import { realTimeDb } from "../db";
+import HomeCard from "../components/HomeCard";
+import Footer from "../components/Layout/Footer";
 export default {
   name: "Home",
-  components: { Header },
+  components: {Footer, HomeCard, Header },
   props: ["user"],
   data: () => ({
+    search: "",
     showMore: false,
-    searchToggle: false
-  })
+    reviewSort: false,
+    searchToggle: false,
+    items: []
+  }),
+  mounted() {
+    this.getItems();
+  },
+  computed: {
+    filterItem() {
+      let data = JSON.parse(JSON.stringify(this.items));
+      data = data.sort((a, b) => b.createdAt - a.createdAt);
+      data = data.filter(v => v.status);
+
+      if (this.reviewSort) {
+        data = data
+          .reduce((total, old) => {
+            let totalStar = old.reviews
+              .map(v => v.rating)
+              .reduce((t, v) => (t += v), 0);
+            total.push({
+              ...old,
+              totalStar,
+              average: Number(totalStar / old.reviews.length).toFixed(1) * 1
+            });
+
+            return total;
+          }, [])
+          .sort((a, b) => b.average - a.average);
+      }
+      if (this.search !== "") {
+        data = data.filter(
+          v => v.name.toLowerCase().indexOf(this.search.toLowerCase()) > -1
+        );
+      }
+      return data;
+    }
+  },
+  methods: {
+    getItems() {
+      let db = realTimeDb.ref("recipes");
+      db.on("child_added", snapshot => {
+        // let data = { ...{ id: snapshot.key }, ...snapshot.val() };
+        let key = Object.keys(snapshot.val());
+        // let data = [];
+        key.forEach(v => {
+          this.items.push({
+            id: v,
+            ...snapshot.val()[v],
+            userId: snapshot.key
+          });
+        });
+        // this.items.push(data);
+      });
+
+      // db.on("child_changed", snapshot => {
+      //   let data = { ...{ id: snapshot.key }, ...snapshot.val() };
+      //   let index = this.items.findIndex(v => v.id == snapshot.key);
+      //   Object.assign(this.items[index], data);
+      // });
+
+      db.on("child_removed", snapshot => {
+        let index = this.items.findIndex(v => v.id == snapshot.key);
+        this.items.splice(index, 1);
+      });
+    }
+  }
 };
 </script>
