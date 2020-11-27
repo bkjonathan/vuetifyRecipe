@@ -2,12 +2,12 @@
   <v-card class="no-border bg_admin" flat>
     <v-img height="200px" :src="item.photo">
       <v-app-bar flat color="rgba(0, 0, 0, 0)">
-        <v-btn color="white" :to="{ name: 'home' }" exact icon>
+        <v-btn color="white" :to="{ name: 'home' }" exact fab small>
           <v-icon>mdi-keyboard-backspace</v-icon>
         </v-btn>
 
         <v-spacer></v-spacer>
-        <v-btn icon color="white">
+        <v-btn fab small color="white" @click="saveBookMark()" v-if="checkBookMark">
           <v-icon>mdi-bookmark</v-icon>
         </v-btn>
       </v-app-bar>
@@ -99,10 +99,10 @@
       </v-row>
       <v-row class="ma-0" v-if="item.reviews">
         <v-col cols="12">
-         <ReviewTotal :reviews="item.reviews.map(v=>v.rating)"/>
+          <ReviewTotal :reviews="item.reviews.map(v => v.rating)" />
         </v-col>
-        <v-col cols="12" v-for="(review,index) in item.reviews" :key="index">
-          <UserReview  :review="review"/>
+        <v-col cols="12" v-for="(review, index) in item.reviews" :key="index">
+          <UserReview :review="review" />
         </v-col>
       </v-row>
     </v-card-text>
@@ -118,7 +118,7 @@ import UserReview from "../components/User/UserReview";
 
 export default {
   name: "Detail",
-  components: {UserReview, ReviewTotal},
+  components: { UserReview, ReviewTotal },
   props: ["user"],
   data: () => ({
     item: {},
@@ -145,8 +145,22 @@ export default {
         }
       }
       return true;
+    },
+    checkBookMark() {
+      if (this.item.saved && this.item.saved.length) {
+        // console.log(this.item)
+        if (this.item.saved.filter(v => v.user.id == this.user.uid).length) {
+          return false;
+        }
+      }
+      return true;
     }
   },
+  // updated() {
+  //   if (this.user==null){
+  //     this.$router.push({name:'login'})
+  //   }
+  // },
   methods: {
     getDetail() {},
     async addReviewmain() {
@@ -194,6 +208,24 @@ export default {
         ? this.item.reviews.filter(v => v != undefined)
         : [];
       data = { reviews: [data, ...oldReviews] };
+      await db.update(data);
+    },
+    async saveBookMark() {
+      let { uid, id } = this.$route.params;
+      let db = realTimeDb.ref("recipes/" + uid + "/" + id);
+      let data = {
+        user: {
+          id: this.user.uid,
+          name: this.user.displayName,
+          email: this.user.email
+        },
+        createdAt: Date.now()
+      };
+      let oldSaved = this.item.saved
+        ? this.item.saved.filter(v => v != undefined)
+        : [];
+      data = { saved: [data,...oldSaved] };
+      // console.log(data);
       await db.update(data);
     }
   },

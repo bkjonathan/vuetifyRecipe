@@ -31,6 +31,15 @@
             >Detail</v-btn
           >
         </div>
+        <div style="position: absolute; bottom: 0px; right: 0px;" v-if="link">
+          <v-btn
+                  color="primary"
+                  :to="{name:'detail',params:{uid:item.userId,id:item.id}}"
+                  large
+                  style="border-radius: 0px;"
+          >Detail</v-btn
+          >
+        </div>
       </v-img>
     </v-card>
   </v-col>
@@ -44,6 +53,10 @@ export default {
     detail:{
       type:Boolean,
       default:()=>true
+    },
+    link:{
+      type:Boolean,
+      default:()=>false
     }
   },
   computed: {
