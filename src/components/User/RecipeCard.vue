@@ -17,7 +17,7 @@
               size="14"
             ></v-rating>
 
-            <div class="ml-4">
+            <div class="ml-4" v-if="item.reviews">
               {{totalReview}} ({{item.reviews.length}})
             </div>
           </v-row>
@@ -61,9 +61,13 @@ export default {
   },
   computed: {
     totalReview() {
-      let totalStar = this.item.reviews.map(v=>v.rating).reduce((t,v)=>t+=v,0)
+      if (this.item && this.item.review){
+        let totalStar = this.item.reviews.map(v=>v.rating).reduce((t,v)=>t+=v,0)
 
-      return Number(totalStar/this.item.reviews.length).toFixed(1)*1
+        return Number(totalStar/this.item.reviews.length).toFixed(1)*1
+      }
+      return 0;
+
     }
   },
   data: () => ({

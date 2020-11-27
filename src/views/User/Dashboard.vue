@@ -76,14 +76,18 @@ export default {
       let data = JSON.parse(JSON.stringify(this.items));
       data = data
         .reduce((total, old) => {
-          let totalStar = old.reviews
-            .map(v => v.rating)
-            .reduce((t, v) => (t += v), 0);
-          total.push({
-            ...old,
-            totalStar,
-            average: Number(totalStar / old.reviews.length).toFixed(1) * 1
-          });
+          if (old.reviews){
+            let totalStar = old.reviews
+                    .map(v => v.rating)
+                    .reduce((t, v) => (t += v), 0);
+
+            total.push({
+              ...old,
+              totalStar,
+              average: Number(totalStar / old.reviews.length).toFixed(1) * 1
+            });
+          }
+
 
           return total;
         }, [])
@@ -92,13 +96,13 @@ export default {
     },
     totalReviews() {
       return this.items
-        .map(v => v.reviews.length)
+        .map(v => (v.reviews?v.reviews.length:0))
         .reduce((total, old) => (total += old), 0);
     },
     totalStars() {
       return this.items
         .map(v =>
-          v.reviews.map(r => r.rating).reduce((tt, cc) => (tt += cc), 0)
+          v.reviews?v.reviews.map(r => r.rating).reduce((tt, cc) => (tt += cc), 0):0
         )
         .reduce((total, o) => (total += o), 0);
     }
