@@ -7,7 +7,7 @@
       <v-col cols="2" class="text-center">
         <div class="display-2">{{totalReview}}</div>
         <div>
-          <v-rating :value="(totalReview*1)" half-increments  dense />
+          <v-rating :value="(totalReview*1)" half-increments readonly dense />
         </div>
         <div>
           <v-icon>mdi-account</v-icon>

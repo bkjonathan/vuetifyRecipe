@@ -29,13 +29,18 @@
         </v-btn>
       </v-app-bar>
 
-      <v-card-title class="white--text mt-8">
+      <v-card-title class="white--text">
         <v-avatar size="56">
           <img alt="user" :src="item.photo" />
         </v-avatar>
-        <p class="ml-3 primary pa-3">
-          {{ item.name }}
-        </p>
+        <div>
+          <p class="ml-3 primary pa-3">
+            {{ item.name }}
+          </p>
+          <div class="white mt-n2 ml-3">
+            <v-rating  :value="totalReview" readonly color="black"/>
+          </div>
+        </div>
       </v-card-title>
     </v-img>
 
@@ -176,6 +181,15 @@ export default {
         }
       }
       return true;
+    },
+    totalReview() {
+      if (this.item && this.item.reviews){
+        let totalStar = this.item.reviews.map(v=>v.rating).reduce((t,v)=>t+=v,0)
+
+        return Number(totalStar/this.item.reviews.length).toFixed(1)*1
+      }
+      return 0;
+
     }
   },
   // updated() {

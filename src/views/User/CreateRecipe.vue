@@ -36,6 +36,7 @@
                   v-model="ingredient.quantity"
                   outlined
                   class="px-3"
+                  @keyup.enter.prevent="addIngredient"
                   :rules="[
                     v => !!v || 'Ingredient Quantity Name Field is required'
                   ]"

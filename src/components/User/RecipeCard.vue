@@ -61,7 +61,7 @@ export default {
   },
   computed: {
     totalReview() {
-      if (this.item && this.item.review){
+      if (this.item && this.item.reviews){
         let totalStar = this.item.reviews.map(v=>v.rating).reduce((t,v)=>t+=v,0)
 
         return Number(totalStar/this.item.reviews.length).toFixed(1)*1
