@@ -1,5 +1,5 @@
 <template>
-  <UserDashboard>
+  <UserDashboard @logout="$emit('logout')" >
     <v-row>
       <RecipeCard
         v-for="(item, index) in items"

@@ -1,5 +1,5 @@
 <template>
-  <UserDashboard>
+  <UserDashboard @logout="$emit('logout')" >
     <v-row justify="center">
       <v-col cols="12" class="mt-6">
         <v-card class="pa-5">
