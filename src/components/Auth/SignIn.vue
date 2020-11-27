@@ -6,7 +6,7 @@
           Sign In
         </h1>
         <div class="text-center mt-4">
-          <v-btn class="mx-2" fab color="black" outlined>
+          <v-btn class="mx-2" @click="loginWithGoogle" fab color="black" outlined>
             <v-icon color="primary">mdi-google</v-icon>
           </v-btn>
         </div>
@@ -65,7 +65,8 @@
 <script>
 /* eslint-disable no-unused-vars */
 
-import { firebaseAuth } from "../../db";
+import { firebaseAuth,firebase } from "../../db";
+
 
 export default {
   name: "SignIn",
@@ -91,6 +92,15 @@ export default {
           }
         );
       }
+    },
+    loginWithGoogle(){
+      let provider = new firebase.auth.GoogleAuthProvider();
+      firebaseAuth.signInWithPopup(provider).then((result)=>{
+        this.$router.push("/");
+      }).catch(function(error) {
+        this.errorMsg = error.message;
+        this.snackbar = true;
+      });
     }
   }
 };

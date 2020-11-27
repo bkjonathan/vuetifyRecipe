@@ -121,6 +121,11 @@ export default {
       description: "",
     }
   }),
+  mounted() {
+    if (!this.user) {
+      this.$router.push({name:'login'})
+    }
+  },
   methods: {
     addIngredient() {
       this.item.ingredients.push({

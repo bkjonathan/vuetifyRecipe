@@ -21,4 +21,4 @@ let realTimeDb = firebaseApp.database();
 let storageRef = firebaseApp.storage().ref()
 
 
-export { firebaseApp, firebaseAuth, db, realTimeDb ,storageRef};
+export { firebaseApp, firebaseAuth, db, realTimeDb ,storageRef,firebase};

@@ -64,6 +64,8 @@ export default {
   mounted() {
     if (this.user) {
       this.getItems(this.user.uid);
+    }else{
+      this.$router.push({name:'login'})
     }
   },
   methods: {

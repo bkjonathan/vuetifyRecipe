@@ -1,5 +1,5 @@
 <template>
-  <UserDashboard @logout="$emit('logout')">
+  <UserDashboard @logout="$emit('logout')" >
     <v-row>
       <v-col cols="6" md="3" class="mt-3">
         <v-card class="dash_card" v-ripple>
@@ -106,6 +106,8 @@ export default {
   mounted() {
     if (this.user) {
       this.getItems(this.user.uid);
+    }else{
+      this.$router.push({name:'login'})
     }
   },
   methods: {

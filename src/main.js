@@ -8,16 +8,21 @@ import "@mdi/font/css/materialdesignicons.css";
 import "./css/app.scss";
 Vue.config.productionTip = false;
 
-import VueTimeago from 'vue-timeago'
+import VueTimeago from "vue-timeago";
+import { firebaseAuth } from "./db";
 
 Vue.use(VueTimeago, {
-  name: 'Timeago',
-  locale: 'en',
-})
-
-new Vue({
-  router,
-  store,
-  vuetify,
-  render: h => h(App)
-}).$mount("#app");
+  name: "Timeago",
+  locale: "en"
+});
+let app = "";
+firebaseAuth.onAuthStateChanged(() => {
+  if (!app) {
+    new Vue({
+      router,
+      store,
+      vuetify,
+      render: h => h(App)
+    }).$mount("#app");
+  }
+});

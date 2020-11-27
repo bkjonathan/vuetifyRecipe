@@ -1,5 +1,16 @@
 <template>
-  <v-card class="no-border bg_admin" flat>
+  <v-card class="no-border bg_admin" flat v-if="user">
+    <v-overlay :value="overlay" color="white" opacity="1">
+      <div class="black--text">Thomas Recipe App Loading...</div>
+      <div class="text-center mt-5">
+        <v-progress-circular
+                indeterminate
+                size="64"
+                color="black"
+
+        ></v-progress-circular>
+      </div>
+    </v-overlay>
     <v-img height="200px" :src="item.photo">
       <v-app-bar flat color="rgba(0, 0, 0, 0)">
         <v-btn color="white" :to="{ name: 'home' }" exact fab small>
@@ -7,7 +18,13 @@
         </v-btn>
 
         <v-spacer></v-spacer>
-        <v-btn fab small color="white" @click="saveBookMark()" v-if="checkBookMark">
+        <v-btn
+          fab
+          small
+          color="white"
+          @click="saveBookMark()"
+          v-if="checkBookMark"
+        >
           <v-icon>mdi-bookmark</v-icon>
         </v-btn>
       </v-app-bar>
@@ -123,9 +140,13 @@ export default {
   data: () => ({
     item: {},
     rating: 0,
-    comment: ""
+    comment: "",
+    overlay: true
   }),
   mounted() {
+    if (!this.user){
+      this.$router.push({name:'login'})
+    }
     let { uid, id } = this.$route.params;
     let db = realTimeDb.ref("recipes/" + uid + "/" + id);
     db.on("child_added", snapshot => {
@@ -149,6 +170,7 @@ export default {
     checkBookMark() {
       if (this.item.saved && this.item.saved.length) {
         // console.log(this.item)
+
         if (this.item.saved.filter(v => v.user.id == this.user.uid).length) {
           return false;
         }
@@ -224,13 +246,20 @@ export default {
       let oldSaved = this.item.saved
         ? this.item.saved.filter(v => v != undefined)
         : [];
-      data = { saved: [data,...oldSaved] };
+      data = { saved: [data, ...oldSaved] };
       // console.log(data);
       await db.update(data);
     }
   },
   beforeDestroy() {
     this.item = [];
+  },
+  watch: {
+    item(val) {
+      if (Object.keys(val).length) {
+        this.overlay = false;
+      }
+    }
   }
 };
 </script>

@@ -20,6 +20,8 @@ export default {
   mounted() {
     if (this.user) {
       this.getItems();
+    }else{
+      this.$router.push({name:'login'})
     }
   },
   computed: {
