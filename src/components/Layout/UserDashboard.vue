@@ -33,6 +33,7 @@
 
       <template v-slot:extension>
         <v-tabs align-with-title>
+          <v-tabs-slider></v-tabs-slider>
           <v-tab :to="{ name: 'home' }">Home</v-tab>
           <v-tab :to="{ name: 'dashboard' }">Dashboard</v-tab>
           <v-tab :to="{ name: 'recipe' }">Recipes</v-tab>
@@ -65,4 +66,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style>
+  .v-tabs:not(.v-tabs--vertical):not(.v-tabs--right) > .v-slide-group--is-overflowing.v-tabs-bar--is-mobile:not(.v-slide-group--has-affixes) .v-slide-group__prev{
+    display: none;
+  }
+</style>

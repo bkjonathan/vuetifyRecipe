@@ -1,6 +1,6 @@
 <template>
   <v-dialog v-model="dialog" transition="dialog-bottom-transition" persistent>
-    <v-card class="pa-5" width="100%" height="100%">
+    <v-card class="pa-5">
       <v-form v-model="valid" ref="EditRecipe" @submit.prevent="updateItem">
         <v-card-text>
           <div class="d-flex justify-end">
@@ -54,6 +54,25 @@
               <v-icon>mdi-close</v-icon>
             </v-btn>
           </v-row>
+          <v-row>
+            <v-col cols="12">
+              <div>Meal Type</div>
+              <v-chip-group v-model="item.mealType" column multiple>
+                <v-chip
+                  filter
+                  outlined
+                  v-for="(meal, index) in mealType"
+                  :key="index"
+                  :value="meal.name"
+                >
+                  <div>
+                    <div class="text-capitalize">{{ meal.name }}</div>
+                  </div>
+                </v-chip>
+              </v-chip-group>
+            </v-col>
+          </v-row>
+
           <v-progress-linear
             buffer-value="60"
             :value="uploadProcess"
@@ -99,7 +118,31 @@ export default {
     dialog: false,
     photo: [],
     valid: false,
+
     uploadProcess: 0,
+    mealType: [
+      {
+        name: "breakfast"
+      },
+      {
+        name: "brunch"
+      },
+      {
+        name: "elevenses"
+      },
+      {
+        name: "lunch"
+      },
+      {
+        name: "tea"
+      },
+      {
+          name: "supper"
+			},
+      {
+        name: "dinner"
+      }
+    ],
     item: {
       name: "",
       ingredients: [
@@ -108,6 +151,7 @@ export default {
           quantity: ""
         }
       ],
+      mealType: [],
       photo: "",
       status: true,
       description: ""
@@ -144,7 +188,8 @@ export default {
   watch: {
     open(val) {
       this.dialog = val;
-      this.item = JSON.parse(JSON.stringify(this.itemEdit));
+      Object.assign(this.item, JSON.parse(JSON.stringify(this.itemEdit)));
+      // this.item = JSON.parse(JSON.stringify(this.itemEdit));
     },
     photo(file) {
       if (file && file.name) {
@@ -184,6 +229,9 @@ export default {
         );
       }
     }
+  },
+  destroyed() {
+    this.dialogClose();
   }
 };
 </script>

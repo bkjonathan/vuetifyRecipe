@@ -2,7 +2,7 @@
   <UserDashboard @logout="$emit('logout')" >
     <v-row justify="center">
       <v-col cols="12" class="mt-6">
-        <v-card class="pa-5">
+        <v-card class="px-5">
           <v-form v-model="valid" @submit.prevent="addItem" ref="RecipeForm">
             <v-card-text>
               <div class="d-flex justify-end">
@@ -60,6 +60,25 @@
                   <v-icon>mdi-close</v-icon>
                 </v-btn>
               </v-row>
+              <v-row>
+                <v-col cols="12">
+                  <div>Meal Type</div>
+                  <v-chip-group v-model="item.mealType" column multiple>
+                    <v-chip
+                            filter
+                            outlined
+                            v-for="(meal, index) in mealType"
+                            :key="index"
+                            :value="meal.name"
+                    >
+                      <div>
+                        <div class="text-capitalize">{{ meal.name }}</div>
+                      </div>
+                    </v-chip>
+                  </v-chip-group>
+                </v-col>
+              </v-row>
+
               <v-progress-linear
                 buffer-value="60"
                 :value="uploadProcess"
@@ -109,6 +128,29 @@ export default {
     photo: [],
     valid: false,
     uploadProcess: 0,
+    mealType: [
+      {
+        name: "breakfast"
+      },
+      {
+        name: "brunch"
+      },
+      {
+        name: "elevenses"
+      },
+      {
+        name: "lunch"
+      },
+      {
+        name: "tea"
+      },
+      {
+        name: "supper"
+      },
+      {
+        name: "dinner"
+      }
+    ],
     item: {
       name: "",
       ingredients: [
@@ -118,6 +160,7 @@ export default {
         }
       ],
       photo: "",
+      mealType: [],
       status: true,
       description: "",
     }
